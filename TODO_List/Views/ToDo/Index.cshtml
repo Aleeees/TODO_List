@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "To-Do List";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Zde můžete přidat vlastní CSS styly */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>@ViewBag.Title</h1>
+    </header>
+
+    <section class="container">
+        <div class="d-flex align-items-baseline" >
+            <form action="/" method="post">
+                <label for="newTask">Nový úkol</label>
+                <input type="text" id="newTask" class="form-control" placeholder="Přidat nový úkol..." required />
+                <label for=" newTasKDate">Splnit do</label> 
+                <input type="datetime" id="newTaskDate" class="form-control" placeholder="Datum a čas" required />
+                <label for="newTaskPriority">Priorita</label>
+                <select id="newTaskPriority" class="form-control" required>
+                    <option value="1">Nízká</option>
+                    <option value="2">Střední</option>
+                    <option value="3">Vysoká</option>
+                </select>
+                <label for="newTaskText">Popis</label>
+                <input type="text" id="newTaskText" class="form-control" placeholder="Popis úkolu" required />
+                <button onclick="addTask()" class="btn btn-primary">Přidat</button>
+            </form>
+        </div>
+        <div class="d-flex align-items-baseline justify-content-between" style="margin-top: 1rem;">
+
+        </div>
+    </section>
+
+    <section class="container">
+        <ul id="taskList" class="list-group">
+            @* Zde budou úkoly zobrazeny *@
+        </ul>
+    </section>
+
+    @*<footer class="footer">
+        <p class="text-center">© 2024 To-Do List App</p>
+    </footer>*@
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        // Zde můžete přidat JavaScript pro dynamické funkce
+    </script>
+</body>
+</html>
