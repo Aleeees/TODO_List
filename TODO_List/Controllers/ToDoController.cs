@@ -13,5 +13,33 @@ namespace TODO_List.Controllers
         {
             return View();
         }
+        public ActionResult Add()
+        {
+            return View();
+        }
+        public ActionResult Edit()
+        {
+            return View();
+        }
+        public ActionResult Delete()
+        {
+            return View();
+        }
+        public ActionResult Details()
+        {
+            return View();
+        }
+        public ActionResult List()
+        {
+            return View();
+        }
+        public ActionResult Modify()
+        {
+            return View();
+        }
+        public ActionResult addTask()
+        {
+            return View();
+        }
     }
 }
