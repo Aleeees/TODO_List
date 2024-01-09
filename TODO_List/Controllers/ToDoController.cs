@@ -31,7 +31,8 @@ namespace TODO_List.Controllers
         }
         public ActionResult List()
         {
-            return View();
+            var tasks = Models.ToDoService.GetToDoList();
+            return View(tasks);
         }
         public ActionResult Modify()
         {
