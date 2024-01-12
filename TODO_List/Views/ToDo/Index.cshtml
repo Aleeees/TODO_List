@@ -16,13 +16,45 @@
     <header>
         <h1>@ViewBag.Title</h1>
     </header>
+    @model IEnumerable<TODO_List.Models.ToDoItem>
 
-    <div>
-        <a href="/ToDo/Add" class="btn btn-outline-success">Přidat úkol</a>
-    </div>
-    <div>
-        <button onclick="List()"class="btn btn-primary">List</button>
-    </div>
+    <h2>Seznam úkolů</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Název</th>
+            <th>Popis</th>
+            <th>Priorita</th>
+            <th>Datum splnění</th>
+            <th>Je splněno</th>
+            <th>Akce</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.Priority</td>
+                <td>@item.DueDate.ToShortDateString()</td>
+                <td>@item.IsDone</td>
+                <td>
+                    <!-- Tlačítko pro detaily -->
+                    @Html.ActionLink("Detaily", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+
+                    <!-- Tlačítko pro editaci -->
+                    @Html.ActionLink("Editovat", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+
+                    <!-- Tlačítko pro mazání -->
+                    @Html.ActionLink("Smazat", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </table>
+
+    @Html.ActionLink("Přidat nový úkol", "Create", null, new { @class = "btn btn-success" })
 
 
 

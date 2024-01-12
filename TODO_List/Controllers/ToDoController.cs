@@ -1,53 +1,131 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TODO_List.Models;
+using LiteDB;
 
 namespace TODO_List.Controllers
 {
     public class ToDoController : Controller
     {
-        // GET: ToDo
+        private LiteDatabase _db = new LiteDatabase(@"C:\Users\alaci\Documents\GitHub\TODO_List\Data.db");
         public ActionResult Index()
         {
-            return View();
+            var items = _db.GetCollection<ToDoItem>("ToDoItems").FindAll();
+            return View(items);
         }
-        public ActionResult Add()
+
+        // Zobrazení detailů úkolu
+        public ActionResult Details(int id)
+        {
+            var item = _db.GetCollection<ToDoItem>("ToDoItems").FindById(id);
+            return View(item);
+        }
+
+        // Vytvoření nového úkolu - GET
+        public ActionResult Create()
         {
             return View();
         }
-        public ActionResult Edit()
+
+        // Vytvoření nového úkolu - POST
+        [HttpPost]
+        public ActionResult Create(ToDoItem item)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _db.GetCollection<ToDoItem>("ToDoItems").Insert(item);
+                return RedirectToAction("Index");
+            }
+            return View(item);
         }
-        public ActionResult Delete()
+
+        // Editace úkolu - GET
+        public ActionResult Edit(int id)
         {
-            return View();
+            var item = _db.GetCollection<ToDoItem>("ToDoItems").FindById(id);
+            return View(item);
         }
-        public ActionResult Details()
+
+        // Editace úkolu - POST
+        [HttpPost]
+        public ActionResult Edit(ToDoItem item)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _db.GetCollection<ToDoItem>("ToDoItems").Update(item);
+                return RedirectToAction("Index");
+            }
+            return View(item);
         }
-        public ActionResult List()
+
+        // Mazání úkolu - GET
+        public ActionResult Delete(int id)
         {
-            var tasks = Models.ToDoService.GetToDoList();
-            return View(tasks);
+            var item = _db.GetCollection<ToDoItem>("ToDoItems").FindById(id);
+            return View(item);
         }
-        public ActionResult Modify()
+
+        // Mazání úkolu - POST
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
-            return View();
+            _db.GetCollection<ToDoItem>("ToDoItems").Delete(id);
+            return RedirectToAction("Index");
         }
-        public ActionResult addTask()
+
+        // Zavření databáze při zavření kontroleru
+        protected override void Dispose(bool disposing)
         {
-            ToDoModel newTask= new ToDoModel();
-            newTask.Title = "Novy";
-            newTask.Description = "";
-            newTask.DueDate = DateTime.Now;
-            newTask.Priority = 1;
-            Models.ToDoService.AddTask(newTask);
-            return View();
+            if (disposing)
+            {
+                _db.Dispose();
+            }
+            base.Dispose(disposing);
         }
+
+        // GET: ToDo
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+        //public ActionResult Add()
+        //{
+        //    return View();
+        //}
+        //public ActionResult Edit()
+        //{
+        //    return View();
+        //}
+        //public ActionResult Delete()
+        //{
+        //    return View();
+        //}
+        //public ActionResult Details()
+        //{
+        //    return View();
+        //}
+        //public ActionResult List()
+        //{
+        //    //var tasks = Models.ToDoService.GetToDoList();
+        //    return View(/*tasks*/);
+        //}
+        //public ActionResult Modify()
+        //{
+        //    return View();
+        //}
+        //public ActionResult addTask()
+        //{
+        //    //ToDoModel newTask= new ToDoModel();
+        //    //newTask.Title = "Novy";
+        //    //newTask.Description = "";
+        //    //newTask.DueDate = DateTime.Now;
+        //    //newTask.Priority = 1;
+        //    //Models.ToDoService.AddTask(newTask);
+        //    return View();
+        //}
     }
 }
