@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TODO_List.Models;
 
 namespace TODO_List.Controllers
 {
@@ -40,6 +41,12 @@ namespace TODO_List.Controllers
         }
         public ActionResult addTask()
         {
+            ToDoModel newTask= new ToDoModel();
+            newTask.Title = "Novy";
+            newTask.Description = "";
+            newTask.DueDate = DateTime.Now;
+            newTask.Priority = 1;
+            Models.ToDoService.AddTask(newTask);
             return View();
         }
     }
