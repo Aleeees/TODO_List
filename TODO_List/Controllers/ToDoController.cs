@@ -87,45 +87,27 @@ namespace TODO_List.Controllers
             base.Dispose(disposing);
         }
 
-        // GET: ToDo
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-        //public ActionResult Add()
-        //{
-        //    return View();
-        //}
-        //public ActionResult Edit()
-        //{
-        //    return View();
-        //}
-        //public ActionResult Delete()
-        //{
-        //    return View();
-        //}
-        //public ActionResult Details()
-        //{
-        //    return View();
-        //}
-        //public ActionResult List()
-        //{
-        //    //var tasks = Models.ToDoService.GetToDoList();
-        //    return View(/*tasks*/);
-        //}
-        //public ActionResult Modify()
-        //{
-        //    return View();
-        //}
-        //public ActionResult addTask()
-        //{
-        //    //ToDoModel newTask= new ToDoModel();
-        //    //newTask.Title = "Novy";
-        //    //newTask.Description = "";
-        //    //newTask.DueDate = DateTime.Now;
-        //    //newTask.Priority = 1;
-        //    //Models.ToDoService.AddTask(newTask);
-        //    return View();
-        //}
+        [HttpPost]
+        public JsonResult ToggleDone(int id, bool isDone)
+        {
+            try
+            {
+                var item = _db.GetCollection<ToDoItem>("ToDoItems").FindById(id);
+                if (item != null)
+                {
+                    item.IsDone = isDone;
+                    _db.GetCollection<ToDoItem>("ToDoItems").Update(item);
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Úkol nebyl nalezen." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

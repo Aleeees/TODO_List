@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<TODO_List.Models.ToDoItem>
+
+@{
     ViewBag.Title = "ToDo";
 }
 
@@ -16,11 +18,13 @@
     <header>
         <h1>@ViewBag.Title</h1>
     </header>
-    @model IEnumerable<TODO_List.Models.ToDoItem>
 
     <h2>Seznam úkolů</h2>
-
-    <table>
+    @*<div class="filter-buttons">
+        <button id="show-active-tasks" class="btn btn-primary">Aktuální úkoly</button>
+        <button id="show-completed-tasks" class="btn btn-secondary">Splněné úkoly</button>
+    </div>*@
+    <table class="table">
         <tr>
             <th>ID</th>
             <th>Název</th>
@@ -33,13 +37,15 @@
 
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="task-item">
                 <td>@item.Id</td>
                 <td>@item.Title</td>
                 <td>@item.Description</td>
                 <td>@item.Priority</td>
                 <td>@item.DueDate.ToShortDateString()</td>
-                <td>@item.IsDone</td>
+                <td>
+                    <input type="checkbox" class="done-checkbox" data-id="@item.Id" @(item.IsDone ? "checked='checked'" : "") />
+                </td>
                 <td>
                     <!-- Tlačítko pro detaily -->
                     @Html.ActionLink("Detaily", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
@@ -57,6 +63,47 @@
     @Html.ActionLink("Přidat nový úkol", "Create", null, new { @class = "btn btn-success" })
 
 
+    <script>
+        $(document).ready(function () {
+            $('#show-active-tasks').click(function () {
+                $('tr.task-item').each(function () {
+                    $(this).toggle(!$(this).find('.done-checkbox').is(':checked'));
+                });
+            });
+
+            $('#show-completed-tasks').click(function () {
+                $('tr.task-item').each(function () {
+                    $(this).toggle($(this).find('.done-checkbox').is(':checked'));
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        function toggleDone(id, isChecked) {
+            $.ajax({
+                url: '@Url.Action("ToggleDone", "ToDo")',
+                type: 'POST',
+                data: { id: id, isDone: isChecked },
+                success: function (response) {
+                    // Zde můžete přidat kód pro zpracování odpovědi serveru
+                },
+                error: function (xhr, status, error) {
+                    // Zpracování chyb
+                }
+            });
+        }
+
+        // Přidání posluchače událostí na všechny checkboxy
+        $(document).ready(function () {
+            $('input[type="checkbox"].done-checkbox').change(function () {
+                var id = $(this).data('id');
+                var isChecked = $(this).is(':checked');
+                toggleDone(id, isChecked);
+            });
+        });
+    </script>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

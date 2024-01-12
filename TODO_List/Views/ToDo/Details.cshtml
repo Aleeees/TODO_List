@@ -1,7 +1,14 @@
-﻿
+﻿@model TODO_List.Models.ToDoItem
+
 @{
     ViewBag.Title = "Detail";
 }
 
 <h2>Detail</h2>
-
+<p>
+    <strong>ID:</strong> @Model.Id<br />
+    <strong>Název:</strong> @Model.Title<br />
+    <strong>Popis:</strong> @Model.Description<br />
+    <strong>Priorita:</strong> @Model.Priority<br />
+    <strong>Datum splnění:</strong> @Model.DueDate.ToShortDateString()<br />
+</p>
