@@ -1,17 +1,16 @@
 ﻿@model IEnumerable<TODO_List.Models.ToDoItem>
 
 @{
-    ViewBag.Title = "ToDo";
+    ViewBag.Title = "Úkolníček";
 }
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>@ViewBag.Title</title>
-    <!-- Bootstrap CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        /* Zde můžete přidat vlastní CSS styly */
     </style>
 </head>
 <body>
@@ -20,10 +19,13 @@
     </header>
 
     <h2>Seznam úkolů</h2>
-    @*<div class="filter-buttons">
-        <button id="show-active-tasks" class="btn btn-primary">Aktuální úkoly</button>
-        <button id="show-completed-tasks" class="btn btn-secondary">Splněné úkoly</button>
-    </div>*@
+    <div class="align-content-md-center">
+        <div class="filter-buttons">
+            <button id="show-all-tasks" class="btn btn-primary">Všechny úkoly</button>
+            <button id="show-active-tasks" class="btn btn-info">Aktuální úkoly</button>
+            <button id="show-completed-tasks" class="btn btn-secondary">Splněné úkoly</button>
+        </div>
+    </div>
     <table class="table">
         <tr>
             <th>ID</th>
@@ -63,55 +65,60 @@
     @Html.ActionLink("Přidat nový úkol", "Create", null, new { @class = "btn btn-success" })
 
 
-    <script>
-        $(document).ready(function () {
-            $('#show-active-tasks').click(function () {
-                $('tr.task-item').each(function () {
-                    $(this).toggle(!$(this).find('.done-checkbox').is(':checked'));
-                });
-            });
+ 
+<script>
+    $(document).ready(function () {
+        $('#show-all-tasks').click(function () {
+            $('tr.task-item').show();
+        });
 
-            $('#show-completed-tasks').click(function () {
-                $('tr.task-item').each(function () {
-                    $(this).toggle($(this).find('.done-checkbox').is(':checked'));
-                });
+        $('#show-active-tasks').click(function () {
+            $('tr.task-item').each(function () {
+                $(this).toggle(!$(this).find('.done-checkbox').is(':checked'));
             });
         });
-    </script>
 
-
-    <script>
-        function toggleDone(id, isChecked) {
-            $.ajax({
-                url: '@Url.Action("ToggleDone", "ToDo")',
-                type: 'POST',
-                data: { id: id, isDone: isChecked },
-                success: function (response) {
-                    // Zde můžete přidat kód pro zpracování odpovědi serveru
-                },
-                error: function (xhr, status, error) {
-                    // Zpracování chyb
-                }
+        $('#show-completed-tasks').click(function () {
+            $('tr.task-item').each(function () {
+                $(this).toggle($(this).find('.done-checkbox').is(':checked'));
             });
+        });
+    });
+
+    // Přidání posluchače událostí na všechny checkboxy
+    $(document).ready(function () {
+        $('input[type="checkbox"].done-checkbox').change(function () {
+            var id = $(this).data('id');
+            var isChecked = $(this).is(':checked');
+            toggleDone(id, isChecked);
+        });
+    });
+
+
+    function toggleDone(id, isChecked) {
+    $.ajax({
+        url: '@Url.Action("ToggleDone", "ToDo")',
+        type: 'POST',
+        data: { id: id, isDone: isChecked },
+        success: function (response) {
+            if(response.success) {
+                console.log("Úkol byl úspěšně aktualizován.");
+            } else {
+                console.error("Chyba při aktualizaci úkolu: " + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX error: " + error);
         }
+    });
+}
+</script>
 
-        // Přidání posluchače událostí na všechny checkboxy
-        $(document).ready(function () {
-            $('input[type="checkbox"].done-checkbox').change(function () {
-                var id = $(this).data('id');
-                var isChecked = $(this).is(':checked');
-                toggleDone(id, isChecked);
-            });
-        });
-    </script>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <script>
-        // Zde můžete přidat JavaScript pro dynamické funkce
-    </script>
 </body>
 </html>

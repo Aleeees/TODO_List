@@ -120,7 +120,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ToDoItem.cs" />
-    <Compile Include="Models\ToDoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +182,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Data\" />
-    <Folder Include="Models\Data\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>

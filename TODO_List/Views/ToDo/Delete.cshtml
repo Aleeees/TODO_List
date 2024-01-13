@@ -20,7 +20,7 @@
             <p>
                 <strong>ID:</strong> @Model.Id<br />
                 <strong>Název:</strong> @Model.Title<br />
-                <strong>Datum splnění:</strong> @Model.DueDate.ToShortDateString()<br />
+                <strong>Splnit do data:</strong> @Model.DueDate.Day.@Model.DueDate.Month.@Model.DueDate.Year<br />
             </p>
 
             @using (Html.BeginForm())

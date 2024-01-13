@@ -76,17 +76,6 @@ namespace TODO_List.Controllers
             _db.GetCollection<ToDoItem>("ToDoItems").Delete(id);
             return RedirectToAction("Index");
         }
-
-        // Zavření databáze při zavření kontroleru
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         [HttpPost]
         public JsonResult ToggleDone(int id, bool isDone)
         {
@@ -109,5 +98,17 @@ namespace TODO_List.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+        // Zavření databáze při zavření kontroleru
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        
     }
 }
