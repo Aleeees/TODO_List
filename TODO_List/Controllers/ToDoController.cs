@@ -25,7 +25,7 @@ namespace TODO_List.Controllers
             return View(item);
         }
 
-        // Vytvoření nového úkolu - GET
+        //Vytvoření nového úkolu - GET
         public ActionResult Create()
         {
             return View();
