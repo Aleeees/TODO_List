@@ -11,7 +11,7 @@ namespace TODO_List.Controllers
 {
     public class ToDoController : Controller
     {
-        private LiteDatabase _db = new LiteDatabase(@"C:\Users\alaci\Documents\GitHub\TODO_List\Data.db");
+        private LiteDatabase _db = new LiteDatabase(@"C:\Users\alaci\source\repos\TODO_List\Data.db");
         public ActionResult Index()
         {
             var items = _db.GetCollection<ToDoItem>("ToDoItems").FindAll();
